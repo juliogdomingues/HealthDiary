@@ -6,7 +6,7 @@ O Health Diary (Diário de Saúde) é uma plataforma desenvolvida para auxiliar 
 
 Principais Funcionalidades
 
-  •	Registro diário de sintomas e geração de relatórios automatizados.
+	•	Registro diário de sintomas e geração de relatórios automatizados.
 	•	Identificação de padrões ao longo de dias, semanas e meses.
 	•	Controle e histórico de medicamentos e tratamentos.
 	•	Registro de exames e laudos médicos com geração de resumos automáticos.
@@ -14,14 +14,15 @@ Principais Funcionalidades
 	•	Geração de gráficos e relatórios visuais.
 	•	Alertas programados para verificação ativa de sintomas.
 	•	Integração de lembretes personalizados para uso de medicamentos.
+	•	Análise de tendências de saúde e pontuação de bem-estar.
 	•	Interface intuitiva com agenda interativa para navegação pelos registros.
 	•	Visualização e filtragem dos sintomas por intensidade, localização e data.
 
 Membros da Equipe
-	•	Guilherme Guerra: Full Stack
-	•	Felipe Gomide (@FelipeGomide): Full Stack
-	•	João Costa: Full Stack
-	•	Júlio Guerra Domingues (@juliogdomingues): Full Stack
+ - Guilherme Guerra: Full Stack
+ - Felipe Gomide (@FelipeGomide): Full Stack
+ - João Costa: Full Stack
+ - Júlio Guerra Domingues (@juliogdomingues): Full Stack
 	
 Tecnologias Utilizadas
 

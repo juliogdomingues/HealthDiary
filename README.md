@@ -73,41 +73,49 @@ Backlog do sprint
 Objetivo do Sprint: Desenvolver as funcionalidades básicas que permitem ao usuário começar a utilizar o sistema, focando na segurança e usabilidade.
 
 	1.	Registro de Sintomas
-	•	Tarefas:
+	
+ 	Tarefas:
 		•	Criar modelo de dados para sintomas.
 		•	Desenvolver formulário de registro de sintomas com os campos necessários.
 		•	Implementar validação dos dados inseridos.
 		•	Testar a interface em diferentes dispositivos (responsividade).
-		•	Critérios de Aceitação:
+	
+ 	Critérios de Aceitação:
 		•	O usuário consegue registrar, editar e excluir sintomas.
 		•	Dados são salvos corretamente no banco de dados.
 
 	2.	Exportação de Dados
-	•	Tarefas:
+	
+ 	Tarefas:
 		•	Implementar funcionalidade de exportação em formato CSV.
 		•	Desenvolver opção para seleção de intervalo de datas.
 		•	Garantir que apenas dados do usuário logado sejam exportados.
-		•	Critérios de Aceitação:
+	
+ 	Critérios de Aceitação:
 		•	O usuário consegue exportar seus dados em CSV.
 		•	Arquivos gerados contêm as informações corretas e estão formatados adequadamente.
 		•	Funcionalidade testada e validada.
 
 	3.	Controle de Medicamentos
-	•	Tarefas:
+	
+ 	Tarefas:
 		•	Criar modelo de dados para medicamentos.
 		•	Desenvolver interface para registro e edição de medicamentos.
-		•	Critérios de Aceitação:
+	
+ 	Critérios de Aceitação:
 		•	O usuário pode adicionar, editar e visualizar seus medicamentos.
 		•	Dados são armazenados corretamente.
 
 	4.	Gestão de Usuários Pacientes
-	•	Tarefas:
+	
+ 	Tarefas:
 		•	Implementar sistema de registro de pacientes com validação de e-mail.
 		•	Desenvolver funcionalidade de login e logout.
 		•	Criar página de perfil para visualização e edição de informações pessoais.
 		•	Implementar recuperação de senha via e-mail.
 		•	Garantir segurança dos dados (criptografia de senhas, proteção contra ataques comuns).
-		•	Critérios de Aceitação:
+	
+ 	Critérios de Aceitação:
 		•	Pacientes podem se registrar, confirmar e-mails e fazer login/logout.
 		•	Cada paciente tem acesso apenas aos seus próprios dados.
 		•	Função de recuperação de senha está operacional.

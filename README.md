@@ -132,3 +132,50 @@ Objetivo do Sprint: Desenvolver as funcionalidades básicas que permitem ao usu�
 		• Segurança básica está implementada e testada.
 
 Nota: Esse é o planejamento inicial. Pode e provavelmente passará por modificações ao longo da implementação, conforme identificarmos necessidades ou desafios técnicos.
+
+# Setup Inicial
+
+## Pré-Requisitos
+
+É necessário Python3 e Node.js, bem como seus gerenciadores de pacotes, pip e npm, respectivamente para lançar os dois servidores do programa.
+
+## Setup Inicial
+
+### Instalar Dependências do Backend
+
+Dentro da pasta raiz do projeto, execute o comando:
+
+```
+	pip install -r requirements.txt
+```
+
+### Instalar Dependências do Frontend
+
+Dentro da pasta healthDiary/frontend, execute o comando:
+
+```
+	npm install
+```
+
+## Rodar o projeto
+
+É preciso duas abas de terminal distintas para lançar ambos frontend e backend.
+
+### Backend
+
+Na pasta healthDiary, execute o comando:
+
+```
+	python3 manage.py runserver
+```
+
+### Frontend
+
+Na pasta healthDiary/frontend, execute:
+
+```
+	npm start
+```
+
+O comando abrirá automaticamente uma aba do Web Browser com o projeto.
+O terminal informará o endereço do servidor local, caso precise abrir outra aba, comumente é http://localhost:3000/.

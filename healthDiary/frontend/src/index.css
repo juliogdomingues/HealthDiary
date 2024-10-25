@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container {
+  font-size: 24px;
+  margin: 0 5%;
+  width: 90%;
+  height: 100%;
+  /* Setup */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* outline: dashed 1px black; */
+}
+
+.child{
+  margin: 1%;
+  position: relative;
+  left: 0%;
+  width: 55%;
+}
+
+.LoginCard {
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  align-self: center;
+  width: 100%;
+  margin: auto;
+  padding: 15px 30px 30px 30px;
+  gap: 20px;
+}

@@ -1,86 +1,55 @@
 // src/components/Login/Login.js
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import './Login.css';
-import logo from '../../assets/images/logo.png'; 
-import medicineImage from '../../assets/images/medicine2.png'; 
-import { Link } from 'react-router-dom'; // Importar Link para navegação
+import logo from '../../assets/images/logo.png';
+import medicineImage from '../../assets/images/medicine2.png';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext'; // Importar AuthContext
 
 const Login = () => {
+  const { login } = useContext(AuthContext); // Obter a função de login do contexto
+  const navigate = useNavigate();
+
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [userError, setUserError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  // Configuração do interceptor do axios
-  axios.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        config.headers['Authorization'] = 'Token ' + token;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
-  const loginSubmit = (event) => {
+  const loginSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitted");
 
     setUserError(false);
     setPasswordError(false);
 
+    let isValid = true;
+
     if (user === '') {
       setUserError(true);
+      isValid = false;
     }
     if (password === '') {
       setPasswordError(true);
+      isValid = false;
     }
 
-    if (user && password) {
-      axios.post("http://localhost:8000/dev/login/", {
-        username: user,
-        password: password
-      })
-      .then(res => {
-        localStorage.setItem("accessToken", res.data.token);
+    if (isValid) {
+      try {
+        const response = await axios.post("http://localhost:8000/dev/login/", {
+          username: user,
+          password: password
+        });
+        login(response.data.token); // Atualizar o estado de autenticação
         alert("Login realizado com sucesso");
-        // Redirecionar para a página principal ou dashboard
-      })
-      .catch(error => {
+        navigate("/dashboard"); // Redirecionar para o dashboard
+      } catch (error) {
         console.log(error);
         alert("Erro ao realizar login. Verifique suas credenciais.");
-      });
+      }
     }
-  };
-
-  const AuthRequest = (event) => {
-    event.preventDefault();
-    console.log("Teste de auth");
-
-    axios.get("http://localhost:8000/dev/auth_test/")
-    .then(res => {
-      console.log(res.data.success);
-      alert(res.data.success);
-    })
-    .catch(error => {
-      console.log(error);
-      alert("Erro na autenticação");
-    });
-  };
-
-  const LogoutRequest = (event) => {
-    event.preventDefault();
-    
-    // TODO: IMPLEMENTAR REQUEST DE LOGOUT PARA DESCONECTAR USER NO BACKEND
-
-    localStorage.clear();
-    alert("Logout realizado com sucesso");
   };
 
   return (
@@ -125,20 +94,6 @@ const Login = () => {
             Login
           </Button>
         </form>
-        <div className="additional-options">
-          <Button variant="outlined" color="secondary" onClick={AuthRequest} fullWidth>
-            Testar autenticação
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={LogoutRequest}
-            fullWidth
-            style={{ marginTop: '10px' }}
-          >
-            Logout
-          </Button>
-        </div>
         <div className="additional-options">
           <p>Não possui uma conta? <Link to="/register">Cadastre-se</Link></p>
         </div>

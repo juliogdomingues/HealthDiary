@@ -1,38 +1,23 @@
 // src/context/EventContext.js
 
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import axiosInstance from '../utils/axiosConfig';
+import { AuthContext } from './AuthContext';
 
-// Cria o contexto
 export const EventContext = createContext();
 
-// Cria o provedor do contexto
 export const EventProvider = ({ children }) => {
+  const { isAuthenticated } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  console.log('EventProvider Rendered'); // Log para verificar se o provedor está sendo renderizado
 
   // Função para buscar eventos (sintomas e tratamentos) do backend
   const fetchEvents = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        throw new Error('Token de autenticação não encontrado. Faça login novamente.');
-      }
-      console.log('Token:', token); // Verificar se o token está correto
-
       const [sintomasResponse, tratamentosResponse] = await Promise.all([
-        axios.get('http://localhost:8000/dev/sintomas/', {
-          headers: { Authorization: `Token ${token}` },
-        }),
-        axios.get('http://localhost:8000/dev/tratamentos/', {
-          headers: { Authorization: `Token ${token}` },
-        }),
+        axiosInstance.get('/dev/sintomas/'),
+        axiosInstance.get('/dev/tratamentos/'),
       ]);
-
-      console.log('Resposta Sintomas:', sintomasResponse.data);
-      console.log('Resposta Tratamentos:', tratamentosResponse.data);
 
       // Mapeia os sintomas para o formato esperado pelo FullCalendar
       const sintomas = sintomasResponse.data.map((sintoma) => {
@@ -48,7 +33,7 @@ export const EventProvider = ({ children }) => {
           allDay: false,
           type: 'Sintoma',
         };
-      }).filter(event => event !== null); // Remove os nulos
+      }).filter(event => event !== null);
 
       // Mapeia os tratamentos para o formato esperado pelo FullCalendar
       const tratamentos = tratamentosResponse.data.map((tratamento) => {
@@ -64,10 +49,7 @@ export const EventProvider = ({ children }) => {
           allDay: false,
           type: 'Tratamento',
         };
-      }).filter(event => event !== null); // Remove os nulos
-
-      console.log('Sintomas Mapeados:', sintomas);
-      console.log('Tratamentos Mapeados:', tratamentos);
+      }).filter(event => event !== null);
 
       // Atualiza o estado com os eventos combinados
       setEvents([...sintomas, ...tratamentos]);
@@ -79,10 +61,14 @@ export const EventProvider = ({ children }) => {
     }
   };
 
-  // Busca os eventos quando o provedor é montado
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    if (isAuthenticated) {
+      fetchEvents();
+    } else {
+      setEvents([]);
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
 
   return (
     <EventContext.Provider value={{ events, setEvents, fetchEvents, loading }}>

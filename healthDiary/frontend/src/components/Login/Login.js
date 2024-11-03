@@ -1,7 +1,7 @@
 // src/components/Login/Login.js
 
 import React, { useState, useContext } from "react";
-import axios from "axios";
+import axiosInstance from '../../utils/axiosConfig'; // Importar a instância do Axios configurada
 import { TextField, Button, Typography, Box } from "@mui/material";
 import './Login.css';
 import logo from '../../assets/images/logo.png';
@@ -13,41 +13,55 @@ const Login = () => {
   const { login } = useContext(AuthContext); // Obter a função de login do contexto
   const navigate = useNavigate();
 
-  const [user, setUser] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userError, setUserError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const loginSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitted");
 
-    setUserError(false);
+    setUsernameError(false);
     setPasswordError(false);
 
     let isValid = true;
 
-    if (user === '') {
-      setUserError(true);
+    if (username.trim() === '') {
+      setUsernameError(true);
       isValid = false;
     }
-    if (password === '') {
+    if (password.trim() === '') {
       setPasswordError(true);
       isValid = false;
     }
 
     if (isValid) {
       try {
-        const response = await axios.post("http://localhost:8000/dev/login/", {
-          username: user,
+        const response = await axiosInstance.post("/dev/login/", {
+          username: username,
           password: password
         });
-        login(response.data.token); // Atualizar o estado de autenticação
-        alert("Login realizado com sucesso");
-        navigate("/dashboard"); // Redirecionar para o dashboard
+
+        // Verifique a resposta do backend
+        console.log("Login Response:", response.data);
+
+        const receivedToken = response.data.token;
+
+        if (receivedToken) {
+          login(receivedToken); // Atualizar o estado de autenticação
+          alert("Login realizado com sucesso");
+          navigate("/dashboard"); // Redirecionar para o dashboard
+        } else {
+          alert("Erro: Token não recebido.");
+        }
       } catch (error) {
-        console.log(error);
-        alert("Erro ao realizar login. Verifique suas credenciais.");
+        console.log("Login Error:", error.response); // Log detalhado do erro
+        if (error.response && error.response.data) {
+          alert(`Erro: ${error.response.data.error || 'Verifique suas credenciais.'}`);
+        } else {
+          alert("Erro ao realizar login. Tente novamente.");
+        }
       }
     }
   };
@@ -66,15 +80,15 @@ const Login = () => {
         <form autoComplete="off" onSubmit={loginSubmit} className="login-form">
           <TextField
             label="Username"
-            onChange={(e) => setUser(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             required
             variant="outlined"
             color="secondary"
             type="text"
             fullWidth
-            value={user}
-            error={userError}
-            helperText={userError ? "Campo obrigatório" : ""}
+            value={username}
+            error={usernameError}
+            helperText={usernameError ? "Campo obrigatório" : ""}
             sx={{ mb: 3 }}
           />
           <TextField

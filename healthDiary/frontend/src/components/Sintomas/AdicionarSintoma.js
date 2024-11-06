@@ -30,7 +30,7 @@ const AdicionarSintoma = () => {
       const token = localStorage.getItem('accessToken');
       await axios.post(
         'http://localhost:8000/dev/sintomas/',
-        { titulo, descricao, data_hora_criacao: dataHoraCriacao },
+        { title: titulo, description: descricao, date: dataHoraCriacao },
         {
           headers: {
             Authorization: `Token ${token}`,

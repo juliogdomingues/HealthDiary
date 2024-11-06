@@ -67,8 +67,8 @@ const Sintomas = () => {
         {sintomas.map((sintoma) => (
           <ListItem key={sintoma.id} divider>
             <ListItemText
-              primary={sintoma.titulo}
-              secondary={sintoma.descricao}
+              primary={sintoma.title}
+              secondary={sintoma.description}
             />
             <IconButton component={Link} to={`/dashboard/sintomas/editar/${sintoma.id}`} color="primary">
               <EditIcon />

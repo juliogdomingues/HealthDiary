@@ -30,7 +30,7 @@ const AdicionarTratamento = () => {
       const token = localStorage.getItem('accessToken');
       await axios.post(
         'http://localhost:8000/dev/tratamentos/',
-        { titulo, descricao, data_hora_criacao: dataHoraCriacao },
+        { title: titulo, description: descricao, frequency: dataHoraCriacao },
         {
           headers: {
             Authorization: `Token ${token}`,

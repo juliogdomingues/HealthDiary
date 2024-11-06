@@ -16,8 +16,7 @@ const EditarTratamento = () => {
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [data, setData] = useState('');
-  const [hora, setHora] = useState('');
+  const [frequencia, setFrequencia] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,12 +29,9 @@ const EditarTratamento = () => {
             Authorization: `Token ${token}`,
           },
         });
-        const { titulo, descricao, data_hora_criacao } = response.data;
-        const [dataParte, horaParte] = data_hora_criacao.split('T');
-        setTitulo(titulo);
-        setDescricao(descricao);
-        setData(dataParte);
-        setHora(horaParte.slice(0, 5)); // Extrai HH:MM
+        setTitulo(response.data.title);
+        setDescricao(response.data.description);
+        setFrequencia(response.data.frequency);
         setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar tratamento:', error);
@@ -52,13 +48,11 @@ const EditarTratamento = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const dataHoraAtualizada = `${data}T${hora}:00`;
-
     try {
       const token = localStorage.getItem('accessToken');
       await axios.put(
         `http://localhost:8000/dev/tratamentos/${id}/`,
-        { titulo, descricao, data_hora_criacao: dataHoraAtualizada },
+        { title: titulo, description: descricao, frequency: frequencia },
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -106,30 +100,17 @@ const EditarTratamento = () => {
             onChange={(e) => setDescricao(e.target.value)}
           />
         </Box>
-        <Box mb={2} display="flex" justifyContent="space-between">
+        <Box mb={2}>
           <TextField
-            label="Data"
+            label="Frequência"
             variant="outlined"
-            type="date"
+            fullWidth
             required
-            value={data}
-            onChange={(e) => setData(e.target.value)}
+            value={frequencia}
+            onChange={(e) => setFrequencia(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
-            sx={{ width: '48%' }}
-          />
-          <TextField
-            label="Hora"
-            variant="outlined"
-            type="time"
-            required
-            value={hora}
-            onChange={(e) => setHora(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            sx={{ width: '48%' }}
           />
         </Box>
         <Button variant="contained" color="secondary" type="submit">

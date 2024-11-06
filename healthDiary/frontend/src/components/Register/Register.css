@@ -1,0 +1,103 @@
+/* src/components/Register/Register.css */
+
+.register-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-side {
+    flex: 1;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .right-side {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image {
+    width: 80%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  .text {
+    text-align: center;
+    padding: 20px;
+    max-width: 600px;
+  }
+  
+  .text h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+  
+  .text p {
+    font-size: 1.2em;
+    color: #555;
+    line-height: 1.6;
+    text-align: justify;
+  }
+  
+  .register-form {
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .additional-options {
+    margin-top: 20px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .additional-options a {
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  .footer {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .footer a {
+    color: #007BFF;
+    text-decoration: none;
+    margin-left: 10px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .register-container {
+      flex-direction: column;
+    }
+  
+    .left-side,
+    .right-side {
+      flex: none;
+      width: 100%;
+    }
+  
+    .text h1 {
+      font-size: 2em;
+    }
+  
+    .text p {
+      font-size: 1em;
+    }
+  }

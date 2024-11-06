@@ -1,0 +1,38 @@
+/* src/components/Dashboard/Dashboard.css */
+
+.dashboard-logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.fc {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Ajustes para o Drawer */
+.MuiDrawer-paper {
+  background-color: #f5f5f5;
+}
+
+/* Melhorar a aparência dos ListItems */
+.MuiListItem-button {
+  border-radius: 4px;
+  margin: 5px 10px;
+}
+
+.MuiListItem-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Botão Exportar CSV em telas grandes */
+@media (min-width: 960px) {
+  .export-csv-button {
+    margin-left: auto;
+  }
+}

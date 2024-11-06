@@ -1,19 +1,28 @@
+// src/index.js
+
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
 import App from './App';
-import Login from './LoginForm'
-// import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './context/AuthContext';
+import { EventProvider } from './context/EventContext';
+import { BrowserRouter as Router } from 'react-router-dom';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+// Importar e iniciar o worker
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = require('./mocks/browser');
+  worker.start();
+}
+
+ReactDOM.render(
   <React.StrictMode>
-    <Login />
-    {/* <App /> */}
-  </React.StrictMode>
+    <Router>
+      <AuthProvider>
+        <EventProvider> {/* Envolva com EventProvider se necessário */}
+          <App />
+        </EventProvider>
+      </AuthProvider>
+    </Router>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();

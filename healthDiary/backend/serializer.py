@@ -11,7 +11,11 @@ from . models import *
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
-    def create(self, validated_data):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name', 'password')
+
+    def create(self, validated_data): #Utilizado na CreateAPIView
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -24,10 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'password')
-
 class LoginSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -39,4 +39,10 @@ class SintomaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Sintoma
-        fields = ('id', 'date', 'title', 'description', 'owner')
+        fields = ('id', 'title', 'description', 'date', 'owner')
+
+class TratamentoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tratamento
+        fields = ('id', 'title', 'description', 'frequency', 'owner')

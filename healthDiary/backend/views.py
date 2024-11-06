@@ -12,31 +12,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from . serializer import *
 from . models import *
 
-#Legacy
-# class UserView(APIView):
-#     serializer_class = UserSerializer
-
-#     def get(self, request):
-#         users = [ {"userName": user.userName,
-#                    "firstName": user.firstName,
-#                    "lastName": user.lastName,
-#                    "password": user.password} 
-#                   for user in User.objects.all()]
-        
-#         return Response(users)
-
-#     def post(self, request):
-
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return  Response(serializer.data)
-
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permissions_classes = [permissions.AllowAny]
         
-
 class LoginView(APIView):
     serializer_class = LoginSerializer
     authentication_classes = [TokenAuthentication]
@@ -50,14 +29,11 @@ class LoginView(APIView):
         else:
             return Response({'error': 'Invalid credentials'}, status=401)
         
-
 class AuthenticatedUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response({'success': 'You made an authenticated action'})
-    
-
 
 class SintomasView(APIView):
     permission_classes = [IsAuthenticated]
@@ -66,10 +42,13 @@ class SintomasView(APIView):
     def get(self, request, pk=None):
         owner_user = Token.objects.get(key=request.auth.key).user
 
-
-        print(pk)
         if pk != None:
-            query = Sintoma.objects.get(id=pk, owner=owner_user)
+
+            try:
+                query = Sintoma.objects.get(id=pk, owner=owner_user)
+            except ObjectDoesNotExist:
+                return Response({"error" : "O ID não existe, ou não pertence ao usuário"})
+            
             serializer = SintomaSerializer(query)
 
         else:
@@ -82,19 +61,20 @@ class SintomasView(APIView):
         owner_user = Token.objects.get(key=request.auth.key).user
 
         if pk != None:
-            to_change = Sintoma.objects.get(id=pk, owner=owner_user)
+            try:
+                to_change = Sintoma.objects.get(id=pk, owner=owner_user)
+            except ObjectDoesNotExist:
+                return Response({"error" : "O ID não existe, ou não pertence ao usuário"})
 
-            if to_change == None: return Response({"error":"requisição inválida"}, status=401) 
-
-            to_change.description = request.data['descricao']
-            to_change.title = request.data['titulo']
-            to_change.date = request.data['data_hora_criacao']
+            to_change.description = request.data['description']
+            to_change.title = request.data['title']
+            to_change.date = request.data['date']
 
             to_change.save()    
             return Response({"success":"Sintoma alterado com sucesso!"})
 
         else:
-            return Response({"error":"requisição inválida"}, status=401)
+            return Response({"error":"Requisição inválida"}, status=400)
         
     def delete(self, request, pk):
         owner_user = Token.objects.get(key=request.auth.key).user
@@ -114,10 +94,70 @@ class SintomasView(APIView):
         owner_user = Token.objects.get(key=request.auth.key).user
 
         Sintoma.objects.create(
-            date=request.data['data_hora_criacao'],
-            title=request.data['titulo'],
-            description=request.data['descricao'],
+            date=request.data['date'],
+            title=request.data['title'],
+            description=request.data['description'],
             owner= owner_user
         )
 
-        return Response({'success': 'You created a new symptom'})
+        return Response({'success': 'Sintoma criado com sucesso!'})
+    
+class TratamentosView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = Tratamento
+
+    def get(self, request, pk=None):
+        owner_user = Token.objects.get(key=request.auth.key).user
+
+        if pk != None:
+            query = Tratamento.objects.get(id=pk, owner=owner_user)
+            serializer = TratamentoSerializer(query)
+
+        else:
+            query = Tratamento.objects.filter(owner=owner_user)
+            serializer = TratamentoSerializer(query, many=True)
+
+        return Response(serializer.data)
+    
+    def post(self, request):
+        owner_user = Token.objects.get(key=request.auth.key).user
+
+        Tratamento.objects.create(
+            title=request.data['title'],
+            description=request.data['description'],
+            frequency=request.data['frequency'],
+            owner= owner_user
+        )
+
+        return Response({'success': 'Tratamento criado com sucesso!'})
+    
+    def delete(self, request, pk):
+        owner_user = Token.objects.get(key=request.auth.key).user
+
+        if pk != None:
+            to_change = Tratamento.objects.get(id=pk, owner=owner_user)
+
+            to_change.delete()
+            return Response({"success":"Sintoma removido com sucesso!"})
+
+        else:
+            return Response({"error":"requisição inválida"}, status=400)
+        
+    def put(self, request, pk):
+        owner_user = Token.objects.get(key=request.auth.key).user
+
+        if pk != None:
+            try:
+                to_change = Tratamento.objects.get(id=pk, owner=owner_user)
+            except ObjectDoesNotExist:
+                return Response({"error" : "O ID não existe, ou não pertence ao usuário"})
+
+            to_change.description = request.data['description']
+            to_change.title = request.data['title']
+            to_change.frequency = request.data['frequency']
+
+            to_change.save()    
+            return Response({"success":"Tratamento alterado com sucesso!"})
+
+        else:
+            return Response({"error":"Requisição inválida"}, status=400)

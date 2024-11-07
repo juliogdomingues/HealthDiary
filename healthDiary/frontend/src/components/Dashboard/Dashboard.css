@@ -1,38 +1,167 @@
-/* src/components/Dashboard/Dashboard.css */
+/* Existing styles */
+
+/* Centralized logo in the sidebar */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
 
 .dashboard-logo {
   width: 150px;
   margin-bottom: 20px;
 }
 
+/* Links with no text decoration */
 .link {
   text-decoration: none;
   color: inherit;
 }
 
+/* Calendar styles */
 .fc {
   max-width: 900px;
   margin: 0 auto;
 }
 
-/* Ajustes para o Drawer */
+/* Drawer styling */
 .MuiDrawer-paper {
   background-color: #f5f5f5;
 }
 
-/* Melhorar a aparência dos ListItems */
+/* List item styling */
 .MuiListItem-button {
   border-radius: 4px;
   margin: 5px 10px;
+  transition: background-color 0.3s;
 }
 
+/* Hover effect for list items */
 .MuiListItem-button:hover {
   background-color: #e0e0e0;
 }
 
-/* Botão Exportar CSV em telas grandes */
+/* CSV Button position */
 @media (min-width: 960px) {
   .export-csv-button {
     margin-left: auto;
   }
 }
+
+/* Calendar container styles */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 20px;
+}
+
+/* Dashboard layout styles */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+}
+
+.sidebar-container {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 24px;
+  width: calc(100% - 240px);
+}
+
+.csv-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+/* CSS */
+.apple-button {
+  background-color: #ffffff;
+  color: #333 !important; /* Ensure gray text color */
+  border-radius: 12px;
+  padding: 0px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #d1d1d6;
+  text-transform: none !important;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.apple-button:hover {
+  background-color: #f5f5f5;
+  border-color: #b8b8b8;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.apple-button:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 2px rgba(217, 210, 201, 0.6);
+}
+
+.apple-button:active {
+  background-color: #e0e0e0;
+  border-color: #a0a0a5;
+}
+
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.calendar-title {
+  margin: 0;
+  flex-grow: 1; /* Ensures title aligns to the left */
+}
+
+/* Override today's cell background to be white */
+.fc-daygrid-day.fc-day-today {
+  background-color: white !important; /* Force background to white */
+  color: black !important; /* Optional: Ensure the text color remains readable */
+}
+
+/* Style for today's date (red circle) */
+.today-highlight .fc-daygrid-day-number {
+  background-color: #ff0000; /* Red background */
+  color: white;              /* White text color */
+  border-radius: 50%;        /* Circle shape */
+  padding: 4px 8px;          /* Adjust padding for circle size */
+  font-weight: bold;
+}
+
+/* Align weekday abbreviation (Mon, Tue, etc.) to the right */
+.fc-col-header-cell {
+  text-align: right !important; /* Force right alignment */
+  padding-right: 10px;          /* Optional: Add space for readability */
+}
+
+/* Optional: Adjust the appearance of the weekday abbreviation if necessary */
+.fc-col-header-cell-content {
+  font-weight: bold;
+  font-size: 14px; /* Adjust as needed */
+}
+

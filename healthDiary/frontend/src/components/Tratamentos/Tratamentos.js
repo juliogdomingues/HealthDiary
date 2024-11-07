@@ -68,7 +68,7 @@ const Tratamentos = () => {
           <ListItem key={tratamento.id} divider>
             <ListItemText
               primary={tratamento.title}
-              secondary={tratamento.description + " " + tratamento.frequency}
+              secondary={tratamento.description }
             />
             <IconButton component={Link} to={`/dashboard/tratamentos/editar/${tratamento.id}`} color="primary">
               <EditIcon />

@@ -1,37 +1,40 @@
-// src/components/Tratamentos/AdicionarTratamento.js
-
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './AdicionarTratamento.css';
-import { EventContext } from '../../context/EventContext'; // Importação correta
+import { EventContext } from '../../context/EventContext';
 
 const AdicionarTratamento = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { fetchEvents } = useContext(EventContext); // Uso correto do contexto
+  const { fetchEvents } = useContext(EventContext);
 
   // Obter a data e hora do estado passado via navegação
-  const initialData = location.state?.data || new Date().toISOString().slice(0, 10); // Formato YYYY-MM-DD
-  const initialHora = location.state?.hora || new Date().toTimeString().slice(0, 5); // Formato HH:MM
+  const initialData = location.state?.data || new Date().toISOString().slice(0, 10);
+  const initialHora = location.state?.hora || new Date().toTimeString().slice(0, 5);
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [frequencia, setFrequencia] = useState('');
   const [data, setData] = useState(initialData);
   const [hora, setHora] = useState(initialHora);
+  const [intervalHours, setIntervalHours] = useState(12); // Valor padrão de 12 horas
+  const [durationDays, setDurationDays] = useState(1); // Valor padrão de 1 dia
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    //const dataHoraCriacao = `${data}T${hora}:00`;
 
     try {
       const token = localStorage.getItem('accessToken');
       await axios.post(
         'http://localhost:8000/dev/tratamentos/',
-        { title: titulo, description: descricao, frequency: frequencia },
+        {
+          title: titulo,
+          description: descricao,
+          initial_hour: hora,
+          interval_hours: intervalHours,
+          duration_days: durationDays,
+        },
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -77,34 +80,39 @@ const AdicionarTratamento = () => {
             onChange={(e) => setDescricao(e.target.value)}
           />
         </Box>
-        <Box mb={2}>
+        <Box display="flex" justifyContent="space-between" mb={2}>
           <TextField
-            label="Frequência"
+            label="Hora Inicial"
             variant="outlined"
             color="secondary"
-            fullWidth
-            //type="date"
-            required
-            multiline
-            rows={2}
-            value={frequencia}
-            onChange={(e) => setFrequencia(e.target.value)}
-            // InputLabelProps={{
-            //   shrink: true,
-            // }}
-          />
-          {/* <TextField
-            label="Hora"
-            variant="outlined"
             type="time"
             required
             value={hora}
             onChange={(e) => setHora(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
             sx={{ width: '48%' }}
-          /> */}
+          />
+          <TextField
+            label="Intervalo (Horas)"
+            variant="outlined"
+            color="secondary"
+            type="number"
+            required
+            value={intervalHours}
+            onChange={(e) => setIntervalHours(e.target.value)}
+            sx={{ width: '48%' }}
+          />
+        </Box>
+        <Box mb={2}>
+          <TextField
+            label="Duração (Dias)"
+            variant="outlined"
+            color="secondary"
+            type="number"
+            required
+            fullWidth
+            value={durationDays}
+            onChange={(e) => setDurationDays(e.target.value)}
+          />
         </Box>
         <Button variant="contained" color="secondary" type="submit">
           Adicionar Tratamento

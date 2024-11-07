@@ -42,7 +42,8 @@ class SintomaSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'date', 'owner')
 
 class TratamentoSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tratamento
-        fields = ('id', 'title', 'description', 'frequency', 'owner')
+        fields = ('id', 'title', 'description', 
+                  'initial_hour', 'interval_hours', 
+                  'duration_days', 'owner', 'is_completed')

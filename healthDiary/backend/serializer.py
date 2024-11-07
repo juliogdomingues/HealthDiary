@@ -46,4 +46,6 @@ class TratamentoSerializer(serializers.ModelSerializer):
         model = Tratamento
         fields = ('id', 'title', 'description', 
                   'initial_hour', 'interval_hours', 
-                  'duration_days', 'owner', 'is_completed')
+                  'duration_days', 'date',
+                  'owner', 'is_completed')
+

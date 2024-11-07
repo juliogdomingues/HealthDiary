@@ -180,20 +180,51 @@ Na pasta healthDiary/frontend, execute:
 O comando abrirá automaticamente uma aba do Web Browser com o projeto.
 O terminal informará o endereço do servidor local, caso precise abrir outra aba, comumente é http://localhost:3000/.
 
+# Diagramas UML
+## Diagrama de Pacotes
+```mermaid
+architecture-beta
+    group backend(server)[Backend]
 
+    service db(database)[Database] in backend
+    service auth(server)[Authentication] in backend
+    service resp(server)[API Response] in backend
+    service ser(disk)[Serializers] in backend
+
+    group frontend(cloud)[Frontend]
+    service dash(internet)[DashBoard] in frontend
+    service form(internet)[Forms] in frontend
+    service req(cloud)[API Request] in frontend
+
+    dash:R --> L:req
+    form:R --> T:req
+
+    req{group}:R --> L:resp{group}
+
+    db:L <-- B:resp
+    resp:R --> L:auth
+    auth:T --> B:db
+    resp:B --> L:ser
+```
+
+## Diagrama de Sequência
+Ação de login e lista de sintomas com autenticação.
 ``` mermaid
 
 sequenceDiagram
-    Usuario->>+API: Logar
-    API->>+Auth: Autenticar
-    Auth->>-API: Toma o token
-    API->>-Usuario: Autenticado! + Token
+    %%Processo de Login
+    User->>+ API: Formulário de Login
+    API->>+ Auth: Autenticação
+    Auth-->>- API: Basic Token
+    API-->>- User: Token
 
-    Usuario->>+API: Quais meus sintomas? + token
-    API->>+Auth: Quem é esse cara?
-    Auth->>-API: É esse aqui
-    API-->>+db: Quais o sintomas dele?
-    db-->>-API: Lista de sintomas
-    API->>-Usuario: Devolve lista de sintomas
+    %%Fetch de Sintomas
+    User ->>+ API: Lista de Sintomas + Token
+    API ->>+ Auth: Identificar User via Token
+    Auth -->>- API: User Object
+    API ->>+ Database: Query de Sintomas com User
+    Database -->>- API: Lista de sintomas
+    API -->>- User: JSON
 
 ```
+

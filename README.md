@@ -179,3 +179,21 @@ Na pasta healthDiary/frontend, execute:
 
 O comando abrirá automaticamente uma aba do Web Browser com o projeto.
 O terminal informará o endereço do servidor local, caso precise abrir outra aba, comumente é http://localhost:3000/.
+
+
+``` mermaid
+
+sequenceDiagram
+    Usuario->>+API: Logar
+    API->>+Auth: Autenticar
+    Auth->>-API: Toma o token
+    API->>-Usuario: Autenticado! + Token
+
+    Usuario->>+API: Quais meus sintomas? + token
+    API->>+Auth: Quem é esse cara?
+    Auth->>-API: É esse aqui
+    API-->>+db: Quais o sintomas dele?
+    db-->>-API: Lista de sintomas
+    API->>-Usuario: Devolve lista de sintomas
+
+```

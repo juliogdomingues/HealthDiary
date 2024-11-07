@@ -17,6 +17,10 @@ import { CSVLink } from 'react-csv';
 import logo from '../../assets/images/logo.png';
 import './Dashboard.css';
 
+const text = {
+  color: "black",
+}
+
 const SideBar = ({ csvReport, drawerWidth }) => {
   const drawer = (
     <div>
@@ -29,21 +33,22 @@ const SideBar = ({ csvReport, drawerWidth }) => {
           <ListItemIcon>
             <ManageAccountsIcon />
           </ListItemIcon>
-          <ListItemText primary="Gerenciar Sintomas" />
+          <ListItemText primaryTypographyProps={{style: text}} primary="Gerenciar Sintomas"/>
         </ListItem>
         <ListItem button component={Link} to="/dashboard/tratamentos">
           <ListItemIcon>
             <HealingIcon />
           </ListItemIcon>
-          <ListItemText primary="Gerenciar Tratamentos" />
+          <ListItemText primaryTypographyProps={{style: text}} primary="Gerenciar Tratamentos"/>
         </ListItem>
         <ListItem button>
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>
           <ListItemText
+            primaryTypographyProps={{style: text}}
             primary={
-              <CSVLink {...csvReport} className="csv-link">
+              <CSVLink {...csvReport} style={{ textDecoration: 'none', color: 'inherit' }}>
                 Exportar CSV
               </CSVLink>
             }
@@ -53,7 +58,7 @@ const SideBar = ({ csvReport, drawerWidth }) => {
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
-          <ListItemText primary="Logout" />
+          <ListItemText primaryTypographyProps={{style: text}} primary="Logout" />
         </ListItem>
       </List>
     </div>

@@ -19,6 +19,7 @@ const EditarSintoma = () => {
   const [data, setData] = useState('');
   const [hora, setHora] = useState('');
   const [loading, setLoading] = useState(true);
+  var data_hora_criacao
 
   useEffect(() => {
     // Função para buscar os dados do sintoma a ser editado
@@ -30,10 +31,11 @@ const EditarSintoma = () => {
             Authorization: `Token ${token}`,
           },
         });
-        const { titulo, descricao, data_hora_criacao } = response.data;
+        //const { titulo, descricao, data_hora_criacao } = response.data;
+        data_hora_criacao = response.data.date;
         const [dataParte, horaParte] = data_hora_criacao.split('T');
-        setTitulo(titulo);
-        setDescricao(descricao);
+        setTitulo(response.data.title);
+        setDescricao(response.data.description);
         setData(dataParte);
         setHora(horaParte.slice(0,5)); // Extrai HH:MM
         setLoading(false);
@@ -58,7 +60,7 @@ const EditarSintoma = () => {
       const token = localStorage.getItem('accessToken');
       await axios.put(
         `http://localhost:8000/dev/sintomas/${id}/`,
-        { titulo, descricao, data_hora_criacao: dataHoraAtualizada },
+        { title:titulo, description: descricao, date: dataHoraAtualizada },
         {
           headers: {
             Authorization: `Token ${token}`,

@@ -1,0 +1,7 @@
+/* dashboard.css */
+
+/* Import each separate CSS file */
+@import url('./sidebar.css');
+@import url('./buttons.css');
+@import url('./layout.css');
+@import url('./symptoms.css');

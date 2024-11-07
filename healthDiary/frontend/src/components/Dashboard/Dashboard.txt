@@ -1,4 +1,4 @@
-/* Existing styles */
+Existing styles
 
 /* Centralized logo in the sidebar */
 .logo-container {
@@ -189,4 +189,25 @@
   border-radius: 50%;
   background-color: #0071e3; /* Blue bullet color */
   margin-right: 6px; /* Reduced margin between bullet and text */
+}
+
+/* Styling for the '+ X more' text */
+.more-symptoms {
+  font-size: 10px; /* Slightly larger font size for visibility */
+  color: darkgray; /* Blue color for a link-like effect */
+  cursor: pointer; /* Makes it look clickable */
+  text-align: left; /* Align to the left */
+  background-color: transparent !important;
+}
+
+.more-symptoms:hover {
+  text-decoration: underline; /* Underline on hover for interactivity */
+}
+
+/* Optional: Style for when you have more symptoms than shown */
+.symptoms-list .more-symptoms {
+  font-weight: bold;
+  background-color: #f5f5f5; /* Optional: Background color for extra visibility */
+  padding: 4px 6px;
+  border-radius: 8px;
 }

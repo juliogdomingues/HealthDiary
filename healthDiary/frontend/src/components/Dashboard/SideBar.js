@@ -15,7 +15,7 @@ import HealingIcon from '@mui/icons-material/Healing';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { CSVLink } from 'react-csv';
 import logo from '../../assets/images/logo.png';
-import './Dashboard.css';
+import './css/Dashboard.css';
 
 const text = {
   color: "black",

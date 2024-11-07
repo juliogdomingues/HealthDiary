@@ -11,36 +11,50 @@ export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+  // src/context/EventContext.js
+
   const fetchEvents = async () => {
     try {
       const sintomasResponse = await axiosInstance.get('/dev/sintomas/');
+      const sintomasData = sintomasResponse.data;
   
-      // Map symptoms to FullCalendar's expected format
-      const sintomas = sintomasResponse.data.map((sintoma) => {
+      // Group symptoms by date
+      const groupedByDate = sintomasData.reduce((acc, sintoma) => {
         if (!sintoma.date) {
           console.warn(`Sintoma com ID ${sintoma.id} não possui 'date'.`);
-          return null;
+          return acc;
         }
   
-        // Convert the symptom date to UTC
         const date = new Date(sintoma.date);
-        const utcDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000); // Adjust to UTC
+        const localDateStr = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()).toISOString().split('T')[0];
+        
+        if (!acc[localDateStr]) acc[localDateStr] = [];
+        
+        // Add each symptom title or fallback to sintoma.title
+        acc[localDateStr].push(sintoma.title);
+        return acc;
+      }, {});
+  
+      // Map the grouped data into events, applying symptom limits
+      const events = Object.entries(groupedByDate).map(([date, symptoms]) => {
+        const limitedSymptoms = symptoms.slice(0, 4);
+        const moreCount = symptoms.length > 4 ? symptoms.length - 4 : 0;
   
         return {
-          id: sintoma.id,
-          title: sintoma.title,  // Use the title as the event's name
-          start: utcDate.toISOString(),  // Set start time as UTC ISO string
-          end: utcDate.toISOString(),    // Set end time as UTC ISO string
-          allDay: true,                  // Treat symptoms as all-day events
-          type: 'Sintoma',
+          id: `event-${date}`,        // Unique identifier for each date's events
+          title: `Symptoms for ${date}`,
+          start: date,                // Date string in 'YYYY-MM-DD' format
+          end: date,
+          allDay: true,
           extendedProps: {
-            symptoms: [sintoma.title], // Store symptoms as an array
+            symptoms: limitedSymptoms, // Limited symptoms for display
+            moreCount,                 // Remaining count if > 5 symptoms
           },
         };
-      }).filter(event => event !== null);
+      });
   
-      // Update the state with the symptoms
-      setEvents(sintomas);
+      setEvents(events);
       setLoading(false);
     } catch (error) {
       console.error('Erro ao buscar sintomas do calendário:', error);
@@ -48,6 +62,7 @@ export const EventProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  
   
 
   useEffect(() => {

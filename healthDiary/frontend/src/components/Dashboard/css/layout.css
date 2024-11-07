@@ -1,0 +1,138 @@
+/* layout.css */
+
+/* Dashboard layout styles */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh; /* Ensure the dashboard container takes full height */
+}
+
+.sidebar-container {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 24px;
+    width: calc(100% - 240px);
+    display: flex;
+    flex-direction: column; /* Ensure column layout for the calendar */
+}
+
+/* Calendar container and header styling */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1; /* Allow it to take remaining height */
+    height: 100%; /* Ensure the calendar container takes up full height */
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
+}
+
+.calendar-title {
+    margin: 0;
+    flex-grow: 1;
+}
+
+/* Full calendar width and height */
+.fc {
+    width: 100%;
+    height: 100%; /* Ensures full height */
+    max-width: none;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Calendar header cells */
+.fc-col-header-cell {
+    text-align: right !important;
+    padding-right: 10px;
+}
+
+.fc-col-header-cell-content {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Today’s cell highlight */
+.fc-daygrid-day.fc-day-today {
+    background-color: white !important;
+    color: black !important;
+}
+
+/* Style for today's date (red circle) */
+.today-highlight .fc-daygrid-day-number {
+    background-color: #ff0000;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-weight: bold;
+}
+
+
+/* calendar.css */
+
+/* Calendar container and alignment */
+.fc {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  /* Calendar container styles */
+  .calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
+  }
+  
+  /* Calendar header styling */
+  .fc-col-header-cell {
+    text-align: right !important;
+    padding-right: 10px;
+  }
+  
+  .fc-col-header-cell-content {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  /* Override today's cell background to be white */
+  .fc-daygrid-day.fc-day-today {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  /* Style for today's date (red circle) */
+  .today-highlight .fc-daygrid-day-number {
+    background-color: #ff0000;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-weight: bold;
+  }
+  

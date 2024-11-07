@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -6,12 +6,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { EventContext } from '../../context/EventContext';
 import './Dashboard.css';
 
-const Calendar = ({ events }) => {
+const Calendar = () => {
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const [currentTitle, setCurrentTitle] = useState('');
+  const { events, loading, fetchEvents } = useContext(EventContext);
 
   const handleDateClick = (arg) => {
     const clickedDate = arg.dateStr;
@@ -54,10 +56,10 @@ const Calendar = ({ events }) => {
   };
 
   useEffect(() => {
-    // Set initial title when component is mounted
+    fetchEvents();
     const calendarApi = calendarRef.current.getApi();
     updateTitle(calendarApi);
-  }, []);
+  }, [fetchEvents]);
 
   return (
     <Box className="calendar-container">
@@ -78,15 +80,21 @@ const Calendar = ({ events }) => {
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={events}
+        events={events}  // Event data comes from context
         dateClick={handleDateClick}
         headerToolbar={false} // Disable default toolbar
-        eventColor="#378006"
+        eventColor="transparent" // Ensure transparent background for events
         dayCellClassNames={(arg) => handleDayCellClassNames(arg.date)} // Apply custom class for today's date
         eventContent={(eventInfo) => (
-          <div>
-            <strong>{eventInfo.event.title}</strong>
-            <div>{eventInfo.event.extendedProps.type}</div>
+          <div className="symptoms-list">
+            {eventInfo.event.extendedProps.symptoms && eventInfo.event.extendedProps.symptoms.length > 0 && (
+              eventInfo.event.extendedProps.symptoms.map((symptom, index) => (
+                <div key={index} className="symptom-item">
+                  <span className="bullet-point"></span>
+                  <span>{symptom}</span>
+                </div>
+              ))
+            )}
           </div>
         )}
         height="auto"

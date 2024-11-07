@@ -11,55 +11,44 @@ export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Função para buscar eventos (sintomas e tratamentos) do backend
   const fetchEvents = async () => {
     try {
-      const [sintomasResponse, tratamentosResponse] = await Promise.all([
-        axiosInstance.get('/dev/sintomas/'),
-        axiosInstance.get('/dev/tratamentos/'),
-      ]);
-
-      // Mapeia os sintomas para o formato esperado pelo FullCalendar
+      const sintomasResponse = await axiosInstance.get('/dev/sintomas/');
+  
+      // Map symptoms to FullCalendar's expected format
       const sintomas = sintomasResponse.data.map((sintoma) => {
-        if (!sintoma.data_hora_criacao) {
-          console.warn(`Sintoma com ID ${sintoma.id} não possui 'data_hora_criacao'.`);
+        if (!sintoma.date) {
+          console.warn(`Sintoma com ID ${sintoma.id} não possui 'date'.`);
           return null;
         }
+  
+        // Convert the symptom date to UTC
+        const date = new Date(sintoma.date);
+        const utcDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000); // Adjust to UTC
+  
         return {
           id: sintoma.id,
-          title: sintoma.titulo,
-          start: sintoma.data_hora_criacao,
-          end: sintoma.data_hora_criacao,
-          allDay: false,
+          title: sintoma.title,  // Use the title as the event's name
+          start: utcDate.toISOString(),  // Set start time as UTC ISO string
+          end: utcDate.toISOString(),    // Set end time as UTC ISO string
+          allDay: true,                  // Treat symptoms as all-day events
           type: 'Sintoma',
+          extendedProps: {
+            symptoms: [sintoma.title], // Store symptoms as an array
+          },
         };
       }).filter(event => event !== null);
-
-      // Mapeia os tratamentos para o formato esperado pelo FullCalendar
-      const tratamentos = tratamentosResponse.data.map((tratamento) => {
-        if (!tratamento.data_hora_criacao) {
-          console.warn(`Tratamento com ID ${tratamento.id} não possui 'data_hora_criacao'.`);
-          return null;
-        }
-        return {
-          id: tratamento.id,
-          title: tratamento.titulo,
-          start: tratamento.data_hora_criacao,
-          end: tratamento.data_hora_criacao,
-          allDay: false,
-          type: 'Tratamento',
-        };
-      }).filter(event => event !== null);
-
-      // Atualiza o estado com os eventos combinados
-      setEvents([...sintomas, ...tratamentos]);
+  
+      // Update the state with the symptoms
+      setEvents(sintomas);
       setLoading(false);
     } catch (error) {
-      console.error('Erro ao buscar dados do calendário:', error);
+      console.error('Erro ao buscar sintomas do calendário:', error);
       alert(`Erro ao carregar dados do calendário: ${error.message}`);
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     if (isAuthenticated) {

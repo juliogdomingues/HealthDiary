@@ -165,3 +165,28 @@
   font-size: 14px; /* Adjust as needed */
 }
 
+/* Styling for event content (Symptoms list) */
+.symptoms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Reduced gap to make items closer */
+}
+
+.symptom-item {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0;
+  font-size: 10px;
+  color: #333;
+  padding: 0;
+  border-radius: 8px;
+  background-color: transparent; /* Ensure no background color */
+}
+
+.bullet-point {
+  width: 5px; /* Smaller bullet */
+  height: 5px; /* Smaller bullet */
+  border-radius: 50%;
+  background-color: #0071e3; /* Blue bullet color */
+  margin-right: 6px; /* Reduced margin between bullet and text */
+}

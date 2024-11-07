@@ -18,19 +18,20 @@ const AdicionarTratamento = () => {
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [frequencia, setFrequencia] = useState('');
   const [data, setData] = useState(initialData);
   const [hora, setHora] = useState(initialHora);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const dataHoraCriacao = `${data}T${hora}:00`;
+    //const dataHoraCriacao = `${data}T${hora}:00`;
 
     try {
       const token = localStorage.getItem('accessToken');
       await axios.post(
         'http://localhost:8000/dev/tratamentos/',
-        { title: titulo, description: descricao, frequency: dataHoraCriacao },
+        { title: titulo, description: descricao, frequency: frequencia },
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -54,6 +55,7 @@ const AdicionarTratamento = () => {
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField
+            color="secondary"
             label="Título"
             variant="outlined"
             fullWidth
@@ -66,6 +68,7 @@ const AdicionarTratamento = () => {
           <TextField
             label="Descrição"
             variant="outlined"
+            color="secondary"
             fullWidth
             required
             multiline
@@ -74,20 +77,23 @@ const AdicionarTratamento = () => {
             onChange={(e) => setDescricao(e.target.value)}
           />
         </Box>
-        <Box mb={2} display="flex" justifyContent="space-between">
+        <Box mb={2}>
           <TextField
-            label="Data"
+            label="Frequência"
             variant="outlined"
-            type="date"
+            color="secondary"
+            fullWidth
+            //type="date"
             required
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            sx={{ width: '48%' }}
+            multiline
+            rows={2}
+            value={frequencia}
+            onChange={(e) => setFrequencia(e.target.value)}
+            // InputLabelProps={{
+            //   shrink: true,
+            // }}
           />
-          <TextField
+          {/* <TextField
             label="Hora"
             variant="outlined"
             type="time"
@@ -98,7 +104,7 @@ const AdicionarTratamento = () => {
               shrink: true,
             }}
             sx={{ width: '48%' }}
-          />
+          /> */}
         </Box>
         <Button variant="contained" color="secondary" type="submit">
           Adicionar Tratamento

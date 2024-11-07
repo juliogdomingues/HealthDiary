@@ -11,10 +11,14 @@ import { Link, useNavigate } from 'react-router-dom';
 const Register = () => {
   const navigate = useNavigate(); // Inicializar o useNavigate
   const [username, setUsername] = useState('');
+  const [first_name, setFirstName] = useState('');
+  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [usernameError, setUsernameError] = useState(false);
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
@@ -24,6 +28,8 @@ const Register = () => {
 
     // Resetar erros
     setUsernameError(false);
+    setFirstNameError(false);
+    setLastNameError(false);
     setEmailError(false);
     setPasswordError(false);
     setConfirmPasswordError(false);
@@ -31,8 +37,16 @@ const Register = () => {
     let isValid = true;
 
     // Validação básica
+    //if (first_name.trim() === '') {
+    //  setFirstNameError(true);
+    //  isValid = false;
+    //}
     if (username.trim() === '') {
       setUsernameError(true);
+      isValid = false;
+    }
+    if (last_name.trim() === '') {
+      setLastNameError(true);
       isValid = false;
     }
     if (email.trim() === '') {
@@ -61,6 +75,8 @@ const Register = () => {
       // Enviar dados para o backend
       axios.post('http://localhost:8000/dev/register/', {
         username: username,
+        first_name: first_name,
+        last_name: last_name,
         email: email,
         password: password,
       })
@@ -87,7 +103,7 @@ const Register = () => {
       <div className="right-side">
         <img src={logo} alt="Logo" className="logo" />
         <form autoComplete="off" onSubmit={registerSubmit} className="register-form">
-          <TextField
+        <TextField
             label="Username"
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -98,6 +114,32 @@ const Register = () => {
             value={username}
             error={usernameError}
             helperText={usernameError ? "Campo obrigatório" : ""}
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="First Name"
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+            variant="outlined"
+            color="secondary"
+            type="text"
+            fullWidth
+            value={first_name}
+            error={firstNameError}
+            helperText={firstNameError ? "Campo obrigatório" : ""}
+            sx={{ mb: 3 }}
+          />
+          <TextField
+            label="Last Name"
+            onChange={(e) => setLastName(e.target.value)}
+            required
+            variant="outlined"
+            color="secondary"
+            type="text"
+            fullWidth
+            value={last_name}
+            error={lastNameError}
+            helperText={lastNameError ? "Campo obrigatório" : ""}
             sx={{ mb: 3 }}
           />
           <TextField

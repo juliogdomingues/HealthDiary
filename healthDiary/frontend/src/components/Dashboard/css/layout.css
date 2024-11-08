@@ -23,7 +23,7 @@
     padding: 24px;
     width: calc(100% - 240px);
     display: flex;
-    flex-direction: column; /* Ensure column layout for the calendar */
+    flex-direction: column; /* Ensure column layout for the calendar */ 
 }
 
 /* Calendar container and header styling */

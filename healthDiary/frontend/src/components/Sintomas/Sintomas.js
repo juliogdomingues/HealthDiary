@@ -81,9 +81,10 @@ const Sintomas = () => {
               secondary={
                 <>
                   <div>{sintoma.description}</div>
-                  <div>Data: {sintoma.date} </div>
+                  <div>Data: {sintoma.date.split("T")[0]} </div>
+                  <div>Hora: {sintoma.date.split("T")[1].slice(0, 5)} </div>
                 </>
-              }
+              } 
             />
             <IconButton component={Link} to={`/dashboard/sintomas/editar/${sintoma.id}`} color="primary">
               <EditIcon />

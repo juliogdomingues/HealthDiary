@@ -1,12 +1,10 @@
-// src/components/Register/Register.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
 import './Register.css';
 import logo from '../../assets/images/HealthMetrics.svg';
 import registerImage from '../../assets/images/HealthMetrics.svg';
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const navigate = useNavigate(); // Inicializar o useNavigate
@@ -37,10 +35,6 @@ const Register = () => {
     let isValid = true;
 
     // Validação básica
-    //if (first_name.trim() === '') {
-    //  setFirstNameError(true);
-    //  isValid = false;
-    //}
     if (username.trim() === '') {
       setUsernameError(true);
       isValid = false;
@@ -103,7 +97,7 @@ const Register = () => {
       <div className="right-side">
         <img src={logo} alt="Logo" className="logo" />
         <form autoComplete="off" onSubmit={registerSubmit} className="register-form">
-        <TextField
+          <TextField
             label="Username"
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -181,8 +175,19 @@ const Register = () => {
             helperText={confirmPasswordError ? "As senhas devem corresponder" : ""}
             sx={{ mb: 3 }}
           />
+          {/* Botão de Cadastrar */}
           <Button variant="contained" color="primary" type="submit" fullWidth>
             Cadastrar
+          </Button>
+
+          {/* Botão de Voltar */}
+          <Button 
+            variant="outlined" 
+            color="secondary" 
+            onClick={() => navigate(-1)} 
+            sx={{ mt: 2, width: '100%' }}
+          >
+            Voltar
           </Button>
         </form>
         <div className="additional-options">

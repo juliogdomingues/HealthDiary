@@ -10,7 +10,7 @@ services:
     name: mysite
     runtime: python
     buildCommand: "cd healthDiary && pip install -r requirements.txt && cd .."
-    startCommand: "cd healthDiary && python -m gunicorn healthDiary.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT"
+    startCommand: "cd healthDiary && python -m gunicorn healthDiary.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:

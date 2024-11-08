@@ -1,16 +1,18 @@
 // src/utils/axiosConfig.js
 
-import axios from 'axios';
+import axios from "axios";
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 // Cria uma instância do Axios
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000', // Altere para a URL do seu backend se necessário
+  baseURL: backendUrl,
 });
 
 // Interceptador de requisições para adicionar o token no header
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (token) {
       // Para Token Authentication do DRF, use 'Token <token>'
       config.headers.Authorization = `Token ${token}`;

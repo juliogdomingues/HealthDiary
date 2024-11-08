@@ -4,8 +4,8 @@ import React, { useState, useContext } from "react";
 import axiosInstance from '../../utils/axiosConfig'; // Importar a instância do Axios configurada
 import { TextField, Button, Typography, Box } from "@mui/material";
 import './Login.css';
-import logo from '../../assets/images/logo.png';
-import medicineImage from '../../assets/images/medicine2.png';
+import logo from '../../assets/images/HealthMetrics.svg';
+import medicineImage from '../../assets/images/HealthMetrics.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext'; // Importar AuthContext
 
@@ -112,8 +112,8 @@ const Login = () => {
           <p>Não possui uma conta? <Link to="/register">Cadastre-se</Link></p>
         </div>
         <div className="footer">
-          <small>SPECTRUS © Todos os direitos reservados.</small>
-          <a href="mailto:spectrusltda@gmail.com">Entre em contato</a>
+          <small>HEALTHDIARY © Todos os direitos reservados.</small>
+          <a href="mailto:flgomide@gmail.com">Entre em contato</a>
         </div>
       </div>
     </div>

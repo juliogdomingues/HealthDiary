@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
 import './Register.css';
-import logo from '../../assets/images/logo.png';
-import registerImage from '../../assets/images/register.png';
+import logo from '../../assets/images/HealthMetrics.svg';
+import registerImage from '../../assets/images/HealthMetrics.svg';
 import { Link, useNavigate } from 'react-router-dom'; 
 
 const Register = () => {
@@ -189,8 +189,8 @@ const Register = () => {
           <p>Já possui uma conta? <Link to="/login">Faça login</Link></p>
         </div>
         <div className="footer">
-          <small>SPECTRUS © Todos os direitos reservados.</small>
-          <a href="mailto:spectrusltda@gmail.com">Entre em contato</a>
+          <small>HEALTHDIARY © Todos os direitos reservados.</small>
+          <a href="mailto:flgomide@gmail.com">Entre em contato</a>
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import HealingIcon from '@mui/icons-material/Healing';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { CSVLink } from 'react-csv';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/HealthMetrics.svg';
 import './css/Dashboard.css';
 
 const text = {

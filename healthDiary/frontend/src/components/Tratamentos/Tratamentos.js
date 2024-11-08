@@ -78,7 +78,13 @@ const Tratamentos = () => {
           <ListItem key={tratamento.id} divider>
             <ListItemText
               primary={tratamento.title}
-              secondary={tratamento.description}
+              secondary={
+                <>
+                  <div>{tratamento.description}</div>
+                  <div>Intervalo: {tratamento.interval_hours} horas</div>
+                  <div>Duração: {tratamento.duration_days} dias</div>
+                </>
+              }
             />
             <IconButton component={Link} to={`/dashboard/tratamentos/editar/${tratamento.id}`} color="primary">
               <EditIcon />

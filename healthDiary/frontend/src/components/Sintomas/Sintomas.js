@@ -78,7 +78,12 @@ const Sintomas = () => {
           <ListItem key={sintoma.id} divider>
             <ListItemText
               primary={sintoma.title}
-              secondary={sintoma.description}
+              secondary={
+                <>
+                  <div>{sintoma.description}</div>
+                  <div>Data: {sintoma.date} </div>
+                </>
+              }
             />
             <IconButton component={Link} to={`/dashboard/sintomas/editar/${sintoma.id}`} color="primary">
               <EditIcon />

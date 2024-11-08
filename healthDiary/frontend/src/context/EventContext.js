@@ -10,6 +10,7 @@ export const EventProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
 
   // src/context/EventContext.js
@@ -18,7 +19,23 @@ export const EventProvider = ({ children }) => {
     try {
       const sintomasResponse = await axiosInstance.get('/dev/sintomas/');
       const sintomasData = sintomasResponse.data;
-  
+      
+
+
+      const processado = Object.entries(sintomasData).map(([idx, symptoms]) => {
+        const [date, time] = symptoms.date.split("T");
+        const hour = time.slice(0, 5);
+
+        return {
+          ...symptoms,
+          date,
+          hour
+        };
+      });
+
+      //console.log(processado)
+      setData(processado)
+
       // Group symptoms by date
       const groupedByDate = sintomasData.reduce((acc, sintoma) => {
         if (!sintoma.date) {
@@ -37,7 +54,7 @@ export const EventProvider = ({ children }) => {
       }, {});
   
       // Map the grouped data into events, applying symptom limits
-      const events = Object.entries(groupedByDate).map(([date, symptoms]) => {
+      var objects = Object.entries(groupedByDate).map(([date, symptoms]) => {
         const limitedSymptoms = symptoms.slice(0, 4);
         const moreCount = symptoms.length > 4 ? symptoms.length - 4 : 0;
   
@@ -54,7 +71,7 @@ export const EventProvider = ({ children }) => {
         };
       });
   
-      setEvents(events);
+      setEvents(objects);
       setLoading(false);
     } catch (error) {
       console.error('Erro ao buscar sintomas do calendário:', error);
@@ -75,7 +92,7 @@ export const EventProvider = ({ children }) => {
   }, [isAuthenticated]);
 
   return (
-    <EventContext.Provider value={{ events, setEvents, fetchEvents, loading }}>
+    <EventContext.Provider value={{ events, setEvents, fetchEvents, loading, data }}>
       {children}
     </EventContext.Provider>
   );

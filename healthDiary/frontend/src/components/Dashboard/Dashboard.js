@@ -10,18 +10,18 @@ import './css/Dashboard.css';
 const drawerWidth = 240;
 
 const Dashboard = () => {
-  const { events, loading } = useContext(EventContext);
+  const { events, loading, data } = useContext(EventContext);
 
   const headers = [
     { label: 'ID', key: 'id' },
     { label: 'Título', key: 'title' },
-    { label: 'Data e Hora de Início', key: 'start' },
-    { label: 'Data e Hora de Término', key: 'end' },
-    { label: 'Tipo', key: 'type' },
+    { label: 'Descrição', key: 'description' },
+    { label: 'Data da Ocorrência', key: 'date'},
+    { label: 'Horário da Ocorrência', key: 'hour'}
   ];
 
   const csvReport = {
-    data: events,
+    data: data,
     headers: headers,
     filename: 'Sintomas_e_Tratamentos.csv',
   };

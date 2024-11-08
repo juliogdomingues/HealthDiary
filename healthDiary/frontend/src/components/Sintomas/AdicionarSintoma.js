@@ -1,5 +1,3 @@
-// src/components/Sintomas/AdicionarSintoma.js
-
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
@@ -48,6 +46,19 @@ const AdicionarSintoma = () => {
 
   return (
     <div className="adicionar-sintoma-container">
+      {/* Box para alinhar os dois botões horizontalmente */}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        {/* Botão Voltar */}
+        <Button variant="outlined" color="secondary" onClick={() => navigate(-1)}>
+          Voltar
+        </Button>
+
+        {/* Botão Adicionar Sintoma */}
+        <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
+          Adicionar Sintoma
+        </Button>
+      </Box>
+
       <Typography variant="h5" gutterBottom>
         Adicionar Novo Sintoma
       </Typography>
@@ -100,9 +111,6 @@ const AdicionarSintoma = () => {
             sx={{ width: '48%' }}
           />
         </Box>
-        <Button variant="contained" color="primary" type="submit">
-          Adicionar Sintoma
-        </Button>
       </form>
     </div>
   );

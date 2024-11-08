@@ -1,9 +1,7 @@
-// src/components/Tratamentos/Tratamentos.js
-
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Typography, Box, Button, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Tratamentos.css';
 import { AuthContext } from '../../context/AuthContext';
 import { EventContext } from '../../context/EventContext'; // Importação do EventContext
@@ -14,6 +12,7 @@ const Tratamentos = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { fetchEvents } = useContext(EventContext); // Uso do EventContext
   const [tratamentos, setTratamentos] = useState([]);
+  const navigate = useNavigate();  // Hook de navegação
 
   useEffect(() => {
     // Função para buscar tratamentos do backend
@@ -57,18 +56,29 @@ const Tratamentos = () => {
     <div className="tratamentos-container">
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5">Meus Tratamentos</Typography>
-        <Link to="/dashboard/tratamentos/adicionar" className="link">
-          <Button variant="contained" color="secondary">
-            Adicionar Tratamento
+
+        {/* Caixa para alinhar os botões lado a lado */}
+        <Box display="flex" gap={2}>
+          {/* Botão Voltar */}
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/dashboard')}>
+            Voltar
           </Button>
-        </Link>
+
+          {/* Botão Adicionar Tratamento */}
+          <Link to="/dashboard/tratamentos/adicionar" className="link">
+            <Button variant="contained" color="secondary">
+              Adicionar Tratamento
+            </Button>
+          </Link>
+        </Box>
       </Box>
+
       <List>
         {tratamentos.map((tratamento) => (
           <ListItem key={tratamento.id} divider>
             <ListItemText
               primary={tratamento.title}
-              secondary={tratamento.description }
+              secondary={tratamento.description}
             />
             <IconButton component={Link} to={`/dashboard/tratamentos/editar/${tratamento.id}`} color="primary">
               <EditIcon />

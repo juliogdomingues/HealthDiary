@@ -1,9 +1,7 @@
-// src/components/Sintomas/Sintomas.js
-
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Typography, Box, Button, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Sintomas.css';
 import { AuthContext } from '../../context/AuthContext';
 import { EventContext } from '../../context/EventContext'; // Importação do EventContext
@@ -14,6 +12,7 @@ const Sintomas = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { fetchEvents } = useContext(EventContext); // Uso do EventContext
   const [sintomas, setSintomas] = useState([]);
+  const navigate = useNavigate();  // Hook de navegação
 
   useEffect(() => {
     // Função para buscar sintomas do backend
@@ -57,12 +56,23 @@ const Sintomas = () => {
     <div className="sintomas-container">
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5">Meus Sintomas</Typography>
-        <Link to="/dashboard/sintomas/adicionar" className="link">
-          <Button variant="contained" color="primary">
-            Adicionar Sintoma
+
+        {/* Caixa para alinhar os botões lado a lado */}
+        <Box display="flex" gap={2}>
+          {/* Botão Voltar */}
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/dashboard')}>
+            Voltar
           </Button>
-        </Link>
+
+          {/* Botão Adicionar Sintoma */}
+          <Link to="/dashboard/sintomas/adicionar" className="link">
+            <Button variant="contained" color="primary">
+              Adicionar Sintoma
+            </Button>
+          </Link>
+        </Box>
       </Box>
+
       <List>
         {sintomas.map((sintoma) => (
           <ListItem key={sintoma.id} divider>

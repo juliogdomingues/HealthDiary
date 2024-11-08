@@ -56,6 +56,7 @@ const AdicionarTratamento = () => {
       <Typography variant="h5" gutterBottom>
         Adicionar Novo Tratamento
       </Typography>
+      
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField
@@ -125,10 +126,20 @@ const AdicionarTratamento = () => {
             sx={{ width: '48%' }}
           />
         </Box>
-        <Button variant="contained" color="secondary" type="submit">
+      </form>
+
+      {/* Box para os botões Voltar e Adicionar Tratamento */}
+      <Box display="flex" justifyContent="space-between" mt={3}>
+        {/* Botão Voltar */}
+        <Button variant="outlined" color="secondary" onClick={() => navigate(-1)}>
+          Voltar
+        </Button>
+
+        {/* Botão Adicionar Tratamento */}
+        <Button variant="contained" color="secondary" onClick={handleSubmit}>
           Adicionar Tratamento
         </Button>
-      </form>
+      </Box>
     </div>
   );
 };

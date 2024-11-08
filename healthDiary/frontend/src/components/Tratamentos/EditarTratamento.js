@@ -1,12 +1,10 @@
-// src/components/Tratamentos/EditarTratamento.js
-
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './EditarTratamento.css';
 import { AuthContext } from '../../context/AuthContext';
-import { EventContext } from '../../context/EventContext'; // Importação do EventContext
+import { EventContext } from '../../context/EventContext';
 
 const EditarTratamento = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -17,7 +15,6 @@ const EditarTratamento = () => {
 
   const initialData = location.state?.data || new Date().toISOString().slice(0, 10);
   const initialHora = location.state?.hora || new Date().toTimeString().slice(0, 5);
-
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
@@ -97,8 +94,9 @@ const EditarTratamento = () => {
       <Typography variant="h5" gutterBottom>
         Editar Tratamento
       </Typography>
+      
       <form onSubmit={handleSubmit}>
-      <Box mb={2}>
+        <Box mb={2}>
           <TextField
             color="secondary"
             label="Título"
@@ -166,10 +164,20 @@ const EditarTratamento = () => {
             sx={{ width: '48%' }}
           />
         </Box>
-        <Button variant="contained" color="secondary" type="submit">
+      </form>
+
+      {/* Box para os botões Voltar e Atualizar Tratamento */}
+      <Box display="flex" justifyContent="space-between" mt={3}>
+        {/* Botão Voltar */}
+        <Button variant="outlined" color="secondary" onClick={() => navigate(-1)}>
+          Voltar
+        </Button>
+
+        {/* Botão Atualizar Tratamento */}
+        <Button variant="contained" color="secondary" onClick={handleSubmit}>
           Atualizar Tratamento
         </Button>
-      </form>
+      </Box>
     </div>
   );
 };

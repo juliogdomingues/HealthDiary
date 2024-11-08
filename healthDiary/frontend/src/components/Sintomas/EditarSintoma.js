@@ -1,5 +1,3 @@
-// src/components/Sintomas/EditarSintoma.js
-
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
@@ -19,7 +17,7 @@ const EditarSintoma = () => {
   const [data, setData] = useState('');
   const [hora, setHora] = useState('');
   const [loading, setLoading] = useState(true);
-  var data_hora_criacao
+  var data_hora_criacao;
 
   useEffect(() => {
     // Função para buscar os dados do sintoma a ser editado
@@ -31,13 +29,12 @@ const EditarSintoma = () => {
             Authorization: `Token ${token}`,
           },
         });
-        //const { titulo, descricao, data_hora_criacao } = response.data;
         data_hora_criacao = response.data.date;
         const [dataParte, horaParte] = data_hora_criacao.split('T');
         setTitulo(response.data.title);
         setDescricao(response.data.description);
         setData(dataParte);
-        setHora(horaParte.slice(0,5)); // Extrai HH:MM
+        setHora(horaParte.slice(0, 5)); // Extrai HH:MM
         setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar sintoma:', error);
@@ -60,7 +57,7 @@ const EditarSintoma = () => {
       const token = localStorage.getItem('accessToken');
       await axios.put(
         `http://localhost:8000/dev/sintomas/${id}/`,
-        { title:titulo, description: descricao, date: dataHoraAtualizada },
+        { title: titulo, description: descricao, date: dataHoraAtualizada },
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -85,6 +82,7 @@ const EditarSintoma = () => {
       <Typography variant="h5" gutterBottom>
         Editar Sintoma
       </Typography>
+
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField
@@ -134,9 +132,19 @@ const EditarSintoma = () => {
             sx={{ width: '48%' }}
           />
         </Box>
-        <Button variant="contained" color="primary" type="submit">
-          Atualizar Sintoma
-        </Button>
+
+        {/* Box para posicionar os botões no final do formulário */}
+        <Box display="flex" justifyContent="space-between" mt={2}>
+          {/* Botão Voltar */}
+          <Button variant="outlined" color="secondary" onClick={() => navigate(-1)}>
+            Voltar
+          </Button>
+
+          {/* Botão Atualizar Sintoma */}
+          <Button variant="contained" color="primary" type="submit">
+            Atualizar Sintoma
+          </Button>
+        </Box>
       </form>
     </div>
   );

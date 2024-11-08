@@ -16,9 +16,10 @@ class Sintoma(models.Model):
 class Tratamento(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, default='Não especificado')
-    initial_hour = models.TimeField(default=datetime.time(0, 0))  # Set default to midnight
+    initial_hour = models.TimeField(default=datetime.time(12, 0)) 
     interval_hours = models.IntegerField(default=12)
     duration_days = models.IntegerField(default=1)
+    date = models.DateField(default=timezone.now)  # New field with default to today's date
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
 

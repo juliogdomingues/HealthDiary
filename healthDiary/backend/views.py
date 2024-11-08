@@ -136,8 +136,9 @@ class TratamentosView(APIView):
             'initial_hour': request.data.get('initial_hour'),
             'interval_hours': request.data.get('interval_hours', 12),
             'duration_days': request.data.get('duration_days', 1),
+            'date': request.data.get('date', timezone.now().date()),  # Default to today if not provided
             'owner': owner_user.id,
-            'is_completed': request.data.get('is_completed', False)  # Default to False if not provided
+            'is_completed': request.data.get('is_completed', False)
         }
 
         # Valida e salva o novo tratamento usando o serializer
@@ -176,7 +177,9 @@ class TratamentosView(APIView):
         tratamento.initial_hour = request.data.get('initial_hour', tratamento.initial_hour)
         tratamento.interval_hours = request.data.get('interval_hours', tratamento.interval_hours)
         tratamento.duration_days = request.data.get('duration_days', tratamento.duration_days)
-        tratamento.is_completed = request.data.get('is_completed', tratamento.is_completed)  # Update is_completed
+        tratamento.date = request.data.get('date', tratamento.date)  # Update date if provided
+        tratamento.is_completed = request.data.get('is_completed', tratamento.is_completed)
 
         tratamento.save()
         return Response({"sucesso": "Tratamento alterado com sucesso!"})
+

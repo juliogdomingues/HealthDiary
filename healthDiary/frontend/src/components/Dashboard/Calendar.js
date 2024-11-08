@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -6,12 +6,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import './Dashboard.css';
+import { EventContext } from '../../context/EventContext';
+import './css/Dashboard.css';
 
-const Calendar = ({ events }) => {
+const Calendar = () => {
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const [currentTitle, setCurrentTitle] = useState('');
+  const { events, loading, fetchEvents } = useContext(EventContext);
 
   const handleDateClick = (arg) => {
     const clickedDate = arg.dateStr;
@@ -54,10 +56,34 @@ const Calendar = ({ events }) => {
   };
 
   useEffect(() => {
-    // Set initial title when component is mounted
+    fetchEvents();
     const calendarApi = calendarRef.current.getApi();
     updateTitle(calendarApi);
-  }, []);
+  }, []); // Array de dependências vazio para garantir que execute apenas uma vez
+
+
+    const eventContent = (eventInfo) => {
+      const symptoms = eventInfo.event.extendedProps.symptoms || [];
+      const moreCount = eventInfo.event.extendedProps.moreCount || 0; // Get moreCount from event data
+
+      return (
+        <div className="symptoms-list">
+          {symptoms.map((symptom, index) => (
+            <div key={index} className="symptom-item">
+              <span className="bullet-point"></span>
+              <span>{symptom.length > 15 ? `${symptom.slice(0, 15)}...` : symptom}</span>
+            </div>
+          ))}
+          {moreCount > 0 && (
+            <div className="more-symptoms">
+              + {moreCount} more
+            </div>
+          )}
+        </div>
+      );
+    };
+
+
 
   return (
     <Box className="calendar-container">
@@ -75,24 +101,21 @@ const Calendar = ({ events }) => {
       </div>
 
       <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={events}
-        dateClick={handleDateClick}
-        headerToolbar={false} // Disable default toolbar
-        eventColor="#378006"
-        dayCellClassNames={(arg) => handleDayCellClassNames(arg.date)} // Apply custom class for today's date
-        eventContent={(eventInfo) => (
-          <div>
-            <strong>{eventInfo.event.title}</strong>
-            <div>{eventInfo.event.extendedProps.type}</div>
-          </div>
-        )}
-        height="auto"
-        datesSet={(info) => updateTitle(info.view.calendar)} // Update title when the view changes
-        viewDidMount={(info) => updateTitle(info.view.calendar)} // Set the title when the view is mounted
-      />
+      key={events.length}  // Re-render if events length changes
+      ref={calendarRef}
+      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+      initialView="dayGridMonth"
+      events={events}  // Pass the limited events array
+      dateClick={handleDateClick}
+      headerToolbar={false} // Disable default toolbar
+      eventColor="transparent" // Ensure transparent background for events
+      dayCellClassNames={(arg) => handleDayCellClassNames(arg.date)} // Apply custom class for today's date
+      eventContent={eventContent}  // Use the eventContent function for limiting symptoms
+      height="auto"
+      datesSet={(info) => updateTitle(info.view.calendar)} // Update title when the view changes
+      viewDidMount={(info) => updateTitle(info.view.calendar)} // Set the title when the view is mounted
+    />
+
     </Box>
   );
 };

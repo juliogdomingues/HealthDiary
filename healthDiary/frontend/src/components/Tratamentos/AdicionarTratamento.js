@@ -16,7 +16,7 @@ const AdicionarTratamento = () => {
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(initialData); // Initial date value
   const [hora, setHora] = useState(initialHora);
   const [intervalHours, setIntervalHours] = useState(12); // Valor padrão de 12 horas
   const [durationDays, setDurationDays] = useState(1); // Valor padrão de 1 dia
@@ -31,6 +31,7 @@ const AdicionarTratamento = () => {
         {
           title: titulo,
           description: descricao,
+          date: data, // Include the date in the submission
           initial_hour: hora,
           interval_hours: intervalHours,
           duration_days: durationDays,
@@ -82,6 +83,16 @@ const AdicionarTratamento = () => {
         </Box>
         <Box display="flex" justifyContent="space-between" mb={2}>
           <TextField
+            label="Data"
+            variant="outlined"
+            color="secondary"
+            type="date"
+            required
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            sx={{ width: '48%' }}
+          />
+          <TextField
             label="Hora Inicial"
             variant="outlined"
             color="secondary"
@@ -91,6 +102,8 @@ const AdicionarTratamento = () => {
             onChange={(e) => setHora(e.target.value)}
             sx={{ width: '48%' }}
           />
+        </Box>
+        <Box display="flex" justifyContent="space-between" mb={2}>
           <TextField
             label="Intervalo (Horas)"
             variant="outlined"
@@ -101,17 +114,15 @@ const AdicionarTratamento = () => {
             onChange={(e) => setIntervalHours(e.target.value)}
             sx={{ width: '48%' }}
           />
-        </Box>
-        <Box mb={2}>
           <TextField
             label="Duração (Dias)"
             variant="outlined"
             color="secondary"
             type="number"
             required
-            fullWidth
             value={durationDays}
             onChange={(e) => setDurationDays(e.target.value)}
+            sx={{ width: '48%' }}
           />
         </Box>
         <Button variant="contained" color="secondary" type="submit">

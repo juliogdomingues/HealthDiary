@@ -1,0 +1,37 @@
+/* sidebar.css */
+
+/* Centralized logo in the sidebar */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .dashboard-logo {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  /* Links with no text decoration */
+  .link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Drawer styling */
+  .MuiDrawer-paper {
+    background-color: #f5f5f5;
+  }
+  
+  /* List item styling */
+  .MuiListItem-button {
+    border-radius: 4px;
+    margin: 5px 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .MuiListItem-button:hover {
+    background-color: #e0e0e0;
+  }
+  

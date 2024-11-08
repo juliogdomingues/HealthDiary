@@ -5,7 +5,7 @@ import { CSVLink } from 'react-csv';
 import { EventContext } from '../../context/EventContext';
 import Calendar from './Calendar';
 import SideBar from './SideBar';
-import './Dashboard.css';
+import './css/Dashboard.css';
 
 const drawerWidth = 240;
 

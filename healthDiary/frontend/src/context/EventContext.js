@@ -11,55 +11,59 @@ export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Função para buscar eventos (sintomas e tratamentos) do backend
+
+  // src/context/EventContext.js
+
   const fetchEvents = async () => {
     try {
-      const [sintomasResponse, tratamentosResponse] = await Promise.all([
-        axiosInstance.get('/dev/sintomas/'),
-        axiosInstance.get('/dev/tratamentos/'),
-      ]);
-
-      // Mapeia os sintomas para o formato esperado pelo FullCalendar
-      const sintomas = sintomasResponse.data.map((sintoma) => {
-        if (!sintoma.data_hora_criacao) {
-          console.warn(`Sintoma com ID ${sintoma.id} não possui 'data_hora_criacao'.`);
-          return null;
+      const sintomasResponse = await axiosInstance.get('/dev/sintomas/');
+      const sintomasData = sintomasResponse.data;
+  
+      // Group symptoms by date
+      const groupedByDate = sintomasData.reduce((acc, sintoma) => {
+        if (!sintoma.date) {
+          console.warn(`Sintoma com ID ${sintoma.id} não possui 'date'.`);
+          return acc;
         }
+  
+        const date = new Date(sintoma.date);
+        const localDateStr = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()).toISOString().split('T')[0];
+        
+        if (!acc[localDateStr]) acc[localDateStr] = [];
+        
+        // Add each symptom title or fallback to sintoma.title
+        acc[localDateStr].push(sintoma.title);
+        return acc;
+      }, {});
+  
+      // Map the grouped data into events, applying symptom limits
+      const events = Object.entries(groupedByDate).map(([date, symptoms]) => {
+        const limitedSymptoms = symptoms.slice(0, 4);
+        const moreCount = symptoms.length > 4 ? symptoms.length - 4 : 0;
+  
         return {
-          id: sintoma.id,
-          title: sintoma.titulo,
-          start: sintoma.data_hora_criacao,
-          end: sintoma.data_hora_criacao,
-          allDay: false,
-          type: 'Sintoma',
+          id: `event-${date}`,        // Unique identifier for each date's events
+          title: `Symptoms for ${date}`,
+          start: date,                // Date string in 'YYYY-MM-DD' format
+          end: date,
+          allDay: true,
+          extendedProps: {
+            symptoms: limitedSymptoms, // Limited symptoms for display
+            moreCount,                 // Remaining count if > 5 symptoms
+          },
         };
-      }).filter(event => event !== null);
-
-      // Mapeia os tratamentos para o formato esperado pelo FullCalendar
-      const tratamentos = tratamentosResponse.data.map((tratamento) => {
-        if (!tratamento.data_hora_criacao) {
-          console.warn(`Tratamento com ID ${tratamento.id} não possui 'data_hora_criacao'.`);
-          return null;
-        }
-        return {
-          id: tratamento.id,
-          title: tratamento.titulo,
-          start: tratamento.data_hora_criacao,
-          end: tratamento.data_hora_criacao,
-          allDay: false,
-          type: 'Tratamento',
-        };
-      }).filter(event => event !== null);
-
-      // Atualiza o estado com os eventos combinados
-      setEvents([...sintomas, ...tratamentos]);
+      });
+  
+      setEvents(events);
       setLoading(false);
     } catch (error) {
-      console.error('Erro ao buscar dados do calendário:', error);
+      console.error('Erro ao buscar sintomas do calendário:', error);
       alert(`Erro ao carregar dados do calendário: ${error.message}`);
       setLoading(false);
     }
   };
+  
+  
 
   useEffect(() => {
     if (isAuthenticated) {
